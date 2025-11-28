@@ -1,0 +1,15 @@
+{
+  "id": "txn_123",
+  "name": "Rent Payment",
+  "date": "2025-11-28T09:30:00Z",
+  "from": "EE909900123456789011 WiseGuys",
+  "to": "EE909900123456789012 John Doe",
+  "amount": "100$",
+  "statuses": [
+    "Confirmed",
+    "Gathering pool",
+    "Preparing to send",
+    "Sent"
+  ],
+  "currentIndex": 1
+}
