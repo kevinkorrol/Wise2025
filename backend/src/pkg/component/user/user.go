@@ -12,9 +12,3 @@ type User struct {
 	OriginatingCountry country.Country
 	AccountCurrencies  []currency.Money
 }
-
-type HashedPassword struct {
-	User           *User
-	Salt           string
-	HashedPassword []byte
-}
