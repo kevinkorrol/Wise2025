@@ -192,6 +192,10 @@ func (db *InMemoryDB) CompleteBatch(batchID uint64, completeTime time.Time) erro
 	return nil
 }
 
+func (db *InMemoryDB) GetBatches() ([]*transaction.Batch, error) {
+	return db.batches, nil
+}
+
 func remove[T any](slice []T, s int) []T {
 	return append(slice[:s], slice[s+1:]...)
 }
