@@ -184,7 +184,7 @@ export default function CalculateFee({ amount: propAmount }: { amount?: string |
 
       {quote && (
         <div style={{ marginTop: 20, padding: 16, border: '1px solid #e5e7eb', borderRadius: 10, background: '#fff', color: '#111827' }}>
-          <h3 style={{ marginTop: 0 }}>Money Saved</h3>
+          <h3 style={{ marginTop: 0 }}>You save:</h3>
           <div style={{ fontSize: 18, fontWeight: 700, color: '#111827' }}>
             {adjustedFee != null ? adjustedFee.toFixed(2) : '—'} {currentFee?.currency ?? SOURCE_CURRENCY}
             {savingsPct != null && <span> ({savingsPct.toFixed(2)}%)</span>}
