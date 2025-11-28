@@ -9,15 +9,8 @@ export type FillmeterProps = {
 }
 
 import { useEffect, useState } from 'react'
+import { getPool } from '../api/transferApi';
 
-type PoolResponse = {
-  ID: number
-  CurrentAmount: { Sum: number; Currency: Currency }
-  MinimumAmount: { Sum: number; Currency: Currency }
-  TargetCurrency: Currency
-  StartTime: string
-  EstimatedCompletion?: string
-}
 
 export default function Fillmeter(props: FillmeterProps) {
   const [data, setData] = useState<{
@@ -38,12 +31,8 @@ export default function Fillmeter(props: FillmeterProps) {
   useEffect(() => {
     if (data) return
     let cancelled = false
-    fetch('/mock/pool.json')
-      .then(async (r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return (await r.json()) as PoolResponse
-      })
-      .then((json) => {
+   
+   getPool().then((json) => {
         if (cancelled) return
         setData({
           id: json.ID,
@@ -51,7 +40,7 @@ export default function Fillmeter(props: FillmeterProps) {
           minimumAmount: { sum: json.MinimumAmount.Sum, currency: json.MinimumAmount.Currency },
           targetCurrency: json.TargetCurrency,
           startTime: json.StartTime,
-          estimatedCompletion: json.EstimatedCompletion,
+          estimatedCompletion: "2025-11-30T10:30:00Z",
         })
       })
       .catch(() => {
