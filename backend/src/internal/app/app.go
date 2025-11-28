@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/kevinkorrol/Wise2025/internal/database"
+	"github.com/kevinkorrol/Wise2025/pkg/component/country"
+	"github.com/kevinkorrol/Wise2025/pkg/component/currency"
 	transaction2 "github.com/kevinkorrol/Wise2025/pkg/component/transaction"
+	"github.com/kevinkorrol/Wise2025/pkg/component/user"
 	"io"
 	"log"
 	"math/rand"
@@ -25,6 +28,61 @@ func New(listenAddress string) *App {
 	}
 
 	return a
+}
+
+func (a *App) CreateMockUsers() {
+	_ = a.db.AddUser(&user.User{
+		ID:                 1,
+		Email:              "john.doe@wise.com",
+		FullName:           "John Doe",
+		OriginatingCountry: "US",
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      2000.0,
+				Currency: currency.DOLLAR,
+			},
+		},
+	})
+
+	_ = a.db.AddUser(&user.User{
+		ID:                 2,
+		Email:              "jane.doe@wise.com",
+		FullName:           "Jane Doe",
+		OriginatingCountry: "US",
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      20000.0,
+				Currency: currency.DOLLAR,
+			},
+		},
+	})
+
+	_ = a.db.AddUser(&user.User{
+		ID:                 3,
+		Email:              "will.power@wise.com",
+		FullName:           "Will Power",
+		OriginatingCountry: "US",
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      25000.0,
+				Currency: currency.DOLLAR,
+			},
+		},
+	})
+
+	_ = a.db.AddUser(&user.User{
+		ID:                 4,
+		Email:              "hack.a.ton@wise.com",
+		FullName:           "Hack A. Ton",
+		OriginatingCountry: country.SouthAfricanRepublic,
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      20000.0,
+				Currency: currency.ZAR,
+			},
+		},
+	})
+
 }
 
 func (a *App) Start() {
