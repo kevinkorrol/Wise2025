@@ -13,30 +13,31 @@ import (
 	"time"
 )
 
-type app struct {
+type App struct {
 	listenAddress string
 	db            database.Database
 }
 
-func New(listenAddress string) *app {
-	a := &app{
+func New(listenAddress string) *App {
+	a := &App{
 		listenAddress: listenAddress,
+		db:            database.NewInMemoryDB(),
 	}
 
 	return a
 }
 
-func (a *app) Start() {
+func (a *App) Start() {
 	http.HandleFunc("/transaction", a.transactionEndpoint())
 	http.HandleFunc("/batch", a.batchEndpoint())
 	err := http.ListenAndServe(a.listenAddress, nil)
 	if err != nil {
-		log.Fatalf("Could not start app: %v\n", err)
+		log.Fatalf("Could not start App: %v\n", err)
 	}
 }
 
 // POST /transaction
-func (a *app) makeTransaction(writer http.ResponseWriter, request *http.Request) {
+func (a *App) makeTransaction(writer http.ResponseWriter, request *http.Request) {
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, "Failed reading body", http.StatusInternalServerError)
@@ -86,7 +87,7 @@ func (a *app) makeTransaction(writer http.ResponseWriter, request *http.Request)
 	_, _ = writer.Write([]byte("Transaction successfully registered!"))
 }
 
-func (a *app) addTransactionToBatch(transaction *transaction2.Transaction) error {
+func (a *App) addTransactionToBatch(transaction *transaction2.Transaction) error {
 	batch, err := a.db.GetExistingBatchTransactionForCurrency(transaction.Amount.Currency, transaction.TargetCurrency)
 	if err != nil {
 		return errors.New("error getting batches")
@@ -135,7 +136,7 @@ func (a *app) addTransactionToBatch(transaction *transaction2.Transaction) error
 }
 
 // GET /transaction
-func (a *app) getTransactions(writer http.ResponseWriter, request *http.Request) {
+func (a *App) getTransactions(writer http.ResponseWriter, request *http.Request) {
 	q := request.URL.Query()
 	userIDString := q.Get("user_id")
 	if userIDString == "" {
@@ -158,7 +159,7 @@ func (a *app) getTransactions(writer http.ResponseWriter, request *http.Request)
 }
 
 // DELETE /transaction
-func (a *app) deleteTransaction(writer http.ResponseWriter, request *http.Request) {
+func (a *App) deleteTransaction(writer http.ResponseWriter, request *http.Request) {
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, "Failed reading body", http.StatusInternalServerError)
@@ -197,7 +198,7 @@ func (a *app) deleteTransaction(writer http.ResponseWriter, request *http.Reques
 	_, _ = writer.Write([]byte("Deleted transaction"))
 }
 
-func (a *app) updateTransaction(writer http.ResponseWriter, request *http.Request) {
+func (a *App) updateTransaction(writer http.ResponseWriter, request *http.Request) {
 	body, err := io.ReadAll(request.Body)
 	if err != nil {
 		http.Error(writer, "Failed reading body", http.StatusInternalServerError)
@@ -223,10 +224,22 @@ func (a *app) updateTransaction(writer http.ResponseWriter, request *http.Reques
 			http.Error(writer, "Error completing transaction", http.StatusInternalServerError)
 			return
 		}
+
+		batch, err := a.db.GetBatchTransactionIsPartOfByID(transaction.ID)
+		if err != nil {
+			http.Error(writer, "could not find batch transaction is part of", http.StatusInternalServerError)
+			return
+		}
+
+		err = a.db.RemoveTransactionFromBatchByID(batch.ID, transaction.ID)
+		if err != nil {
+			http.Error(writer, "could not remove transaction from batch", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
-func (a *app) transactionEndpoint() http.HandlerFunc {
+func (a *App) transactionEndpoint() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		switch request.Method {
 		case http.MethodPost:
@@ -248,7 +261,7 @@ func (a *app) transactionEndpoint() http.HandlerFunc {
 	}
 }
 
-func (a *app) batchEndpoint() http.HandlerFunc {
+func (a *App) batchEndpoint() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		if request.Method != http.MethodGet {
 			http.Error(writer, "", http.StatusMethodNotAllowed)
