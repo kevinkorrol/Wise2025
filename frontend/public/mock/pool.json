@@ -3,5 +3,6 @@
   "CurrentAmount": { "Sum": 4000, "Currency": "EUR" },
   "MinimumAmount": { "Sum": 22000, "Currency": "EUR" },
   "TargetCurrency": "EUR",
-  "StartTime": "2025-11-28T09:00:00Z"
+  "StartTime": "2025-11-28T09:00:00Z",
+  "EstimatedCompletion": "2025-11-30T10:30:00Z"
 }
