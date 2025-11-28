@@ -1,10 +1,12 @@
 // src/pages/Home.tsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import SendMoneyCalculator from "../components/SendMoney";
 import HomeHeader from "../components/HomePage/HomeHeader";
 import PromoSection from "../components/HomePage/PromoSection";
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <div style={pageStyle}>
       {/* Header */}
@@ -15,7 +17,7 @@ export default function Home() {
       {/* Main content */}
       <div style={mainContentStyle}>
         <PromoSection />
-        <SendMoneyCalculator />
+        <SendMoneyCalculator onSubmit={() => navigate("/transfer")} />
       </div>
     </div>
   );
