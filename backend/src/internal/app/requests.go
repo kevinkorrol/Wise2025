@@ -39,3 +39,8 @@ type GetBatchInfoResponse struct {
 	TargetCurrency currency.Currency
 	StartTime      time.Time
 }
+
+// GET /metrics
+type GetMetricsResponse struct {
+	Batches []*transaction.Batch
+}

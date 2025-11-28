@@ -30,6 +30,8 @@ func New(listenAddress string) *App {
 func (a *App) Start() {
 	http.HandleFunc("/transaction", a.transactionEndpoint())
 	http.HandleFunc("/batch", a.batchEndpoint())
+	http.HandleFunc("/metrics", a.metricsEndpoint())
+
 	err := http.ListenAndServe(a.listenAddress, nil)
 	if err != nil {
 		log.Fatalf("Could not start App: %v\n", err)
@@ -290,6 +292,25 @@ func (a *App) batchEndpoint() http.HandlerFunc {
 			http.Error(writer, "", http.StatusMethodNotAllowed)
 			return
 		}
+	}
+}
+
+func (a *App) metricsEndpoint() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		batches, err := a.db.GetBatches()
+		if err != nil {
+			http.Error(writer, "Could not get batches from database", http.StatusInternalServerError)
+			return
+		}
+
+		activeBatches := make([]*transaction2.Batch, 0)
+		for _, b := range batches {
+			if !b.IsFull() {
+				activeBatches = append(activeBatches, b)
+			}
+		}
+
+		sendResponseJson(writer, &activeBatches)
 	}
 }
 
