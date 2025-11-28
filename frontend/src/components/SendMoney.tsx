@@ -5,7 +5,7 @@ import InfoIcon from "../assets/globe-img.png";
 import usaFlag from "../assets/flag-usa.svg";
 import zaFlag from "../assets/flag-za.svg";
 
-export default function SendMoney() {
+export default function SendMoney({ onSubmit }: { onSubmit?: () => void }) {
   const navigate = useNavigate();
   const [sendAmount, setSendAmount] = useState("25000");
   const [receiveAmount, setReceiveAmount] = useState("425509.57");
@@ -14,7 +14,11 @@ export default function SendMoney() {
   const exchangeRate = 17.1214;
 
   const handleSendMoney = () => {
-    navigate("/transfer");
+    if (onSubmit) {
+      onSubmit();      // use parent page’s action
+    } else {
+      navigate("/transfer"); // default behavior
+    }
   };
 
   const updateSendAmount = (value: string) => {
@@ -81,16 +85,22 @@ export default function SendMoney() {
       {/* Payment Method */}
       <div style={fieldStyle}>
         <label style={labelStyle}>Paying with</label>
-        <div style={paymentMethodStyle}>
-          <span>Bank transfer</span>
-          <button style={changeButtonStyle}>Change ➔</button>
+        <div style={paymentBoxStyle}>
+            <div style={paymentLeftStyle}>
+            <span style={paymentEmojiStyle}>🏦</span>
+            <span>Wire transfer</span>
+            </div>
+
+            <button style={changePaymentButtonStyle}>
+            Change &gt;
+            </button>
         </div>
-      </div>
+        </div>
 
       {/* Fees Summary */}
       <div style={feesContainerStyle}>
         <div style={feeRowStyle}>
-          <span>Bank transfer fee</span>
+          <span>Wire transfer fee</span>
           <span>0 EUR</span>
         </div>
         <div style={feeRowStyle}>
@@ -310,4 +320,49 @@ const sendButtonStyle: React.CSSProperties = {
 const flagStyle: React.CSSProperties = {
   width: 24,
   height: 24,
+};
+
+const paymentBoxStyle: React.CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  backgroundColor: "#fff",
+  border: "1px solid #ccc",
+  borderRadius: "12px",
+  padding: "0 1rem",
+  height: "72px",                // matches input boxes
+};
+
+const paymentLeftStyle: React.CSSProperties = {
+  display: "flex",
+  alignItems: "center",
+  gap: "0.5rem",
+  color: "black",
+  fontWeight: 600,
+  fontSize: "1rem",
+};
+
+const paymentIconStyle: React.CSSProperties = {
+  width: 24,
+  height: 24,
+  objectFit: "contain",
+};
+
+const changePaymentButtonStyle: React.CSSProperties = {
+  padding: "0.35rem 0.75rem",
+  backgroundColor: "#e0e0e0",
+  border: "none",
+  borderRadius: "8px",
+  cursor: "pointer",
+  fontWeight: 600,
+  fontSize: "0.9rem",
+  color: "black",
+};
+
+
+
+const paymentEmojiStyle: React.CSSProperties = {
+  fontSize: "1.25rem",
+  display: "flex",
+  alignItems: "center",
 };
