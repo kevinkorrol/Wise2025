@@ -12,3 +12,24 @@ services:
     environment:
       - NODE_ENV=development
     command: npm run dev -- --host
+
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9091:9090"
+
+  mock_backend:
+    build: ./mock_backend
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./mock_backend/mock_data.json:/app/mock_data.json
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    ports:
+      - "3000:3000"
