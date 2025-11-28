@@ -1,5 +1,4 @@
 import { useState } from 'react'
-type Currency = 'USD' | 'GBP' | 'EUR' | 'ZAR'
 
 type QuoteResponse = {
   id?: string
@@ -48,10 +47,9 @@ function extractWiseFee(q: QuoteResponse): { wiseFee?: number; currency?: string
   }
 }
 
-export default function CalculateFee() {
-  const [sourceCurrency, setSourceCurrency] = useState('USD')
-  const [targetCurrency, setTargetCurrency] = useState('EUR')
-  const [amount, setAmount] = useState('100')
+export default function CalculateFee({ amount: propAmount }: { amount?: string | number }) {
+  const SOURCE_CURRENCY = 'USD'
+  const TARGET_CURRENCY = 'ZAR'
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [quote, setQuote] = useState<QuoteResponse | null>(null)
@@ -63,8 +61,8 @@ export default function CalculateFee() {
   async function fetchBaseline() {
     if (
       baselineQuote &&
-      baselineQuote.sourceCurrency === sourceCurrency.toUpperCase() &&
-      baselineQuote.targetCurrency === targetCurrency.toUpperCase()
+      baselineQuote.sourceCurrency === SOURCE_CURRENCY &&
+      baselineQuote.targetCurrency === TARGET_CURRENCY
     )
       return
     setBaselineError(null)
@@ -78,8 +76,8 @@ export default function CalculateFee() {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
-          sourceCurrency: sourceCurrency.toUpperCase(),
-          targetCurrency: targetCurrency.toUpperCase(),
+          sourceCurrency: SOURCE_CURRENCY,
+          targetCurrency: TARGET_CURRENCY,
           sourceAmount: 22000,
         }),
       })
@@ -103,9 +101,9 @@ export default function CalculateFee() {
     setError(null)
     setQuote(null)
     setAdjustedFee(null)
-    const num = Number(amount)
-    if (!sourceCurrency || !targetCurrency || isNaN(num) || num <= 0) {
-      setError('Please provide valid currencies and a positive amount.')
+    const num = Number(propAmount)
+    if (isNaN(num) || num <= 0) {
+      setError('Please enter a positive amount in the Send Money form.')
       return
     }
     setLoading(true)
@@ -118,8 +116,8 @@ export default function CalculateFee() {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
-          sourceCurrency: sourceCurrency.toUpperCase(),
-          targetCurrency: targetCurrency.toUpperCase(),
+          sourceCurrency: SOURCE_CURRENCY,
+          targetCurrency: TARGET_CURRENCY,
           sourceAmount: num,
         }),
       })
@@ -153,82 +151,16 @@ export default function CalculateFee() {
 
   return (
     <div style={{ maxWidth: 520 }}>
-      <h2 style={{ marginBottom: 12 }}>Calculate Transfer Fee</h2>
+      <h2 style={{ marginBottom: 12, color: '#111827' }}>Calculate Transfer Fee With Pooling</h2>
       <form onSubmit={onSubmit} style={{ display: 'grid', gap: 12 }}>
-        <div
-          style={{
-            background: '#fff',
-            border: '1px solid #e5e7eb',
-            borderRadius: 8,
-            padding: 12,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            color: '#111827',
-          }}
-        >
-          <span style={{ fontWeight: 600 }}>From</span>
-          <select
-            value={sourceCurrency}
-            onChange={(e) => setSourceCurrency(e.target.value as Currency)}
-            style={{
-              background: '#fff',
-              border: '1px solid #e5e7eb',
-              borderRadius: 6,
-              padding: '8px 10px',
-              minWidth: 120,
-              color: '#111827',
-            }}
-          >
-            <option value="USD">USD</option>
-            <option value="GBP">GBP</option>
-            <option value="EUR">EUR</option>
-            <option value="ZAR">ZAR</option>
-          </select>
+        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#111827' }}>
+          <div style={{ fontWeight: 600 }}>From</div>
+          <div>USD → ZAR</div>
         </div>
 
-        <div
-          style={{
-            background: '#fff',
-            border: '1px solid #e5e7eb',
-            borderRadius: 8,
-            padding: 12,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            color: '#111827',
-          }}
-        >
-          <span style={{ fontWeight: 600 }}>To</span>
-          <select
-            value={targetCurrency}
-            onChange={(e) => setTargetCurrency(e.target.value as Currency)}
-            style={{
-              background: '#fff',
-              border: '1px solid #e5e7eb',
-              borderRadius: 6,
-              padding: '8px 10px',
-              minWidth: 120,
-              color: '#111827',
-            }}
-          >
-            <option value="USD">USD</option>
-            <option value="GBP">GBP</option>
-            <option value="EUR">EUR</option>
-            <option value="ZAR">ZAR</option>
-          </select>
-        </div>
-        <div>
-          <label style={{ fontWeight: 600, color: '#111827' }}>You send exactly</label>
-          <input
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="100"
-            style={{ width: '100%', padding: '8px 10px', border: '1px solid #ccc', borderRadius: 6, background: '#fff', color: '#111827' }}
-          />
+        <div style={{ display: 'flex', justifyContent: 'space-between', color: '#111827' }}>
+          <div style={{ fontWeight: 600 }}>You send exactly</div>
+          <div>{Number(propAmount || 0).toLocaleString(undefined, { maximumFractionDigits: 2 })} USD</div>
         </div>
         <button
           type="submit"
@@ -253,7 +185,7 @@ export default function CalculateFee() {
         <div style={{ marginTop: 20, padding: 16, border: '1px solid #e5e7eb', borderRadius: 10, background: '#fff', color: '#111827' }}>
           <h3 style={{ marginTop: 0 }}>Money Saved</h3>
           <div style={{ fontSize: 18, fontWeight: 700, color: '#111827' }}>
-            {adjustedFee != null ? adjustedFee.toFixed(2) : '—'} {currentFee?.currency ?? sourceCurrency.toUpperCase()}
+            {adjustedFee != null ? adjustedFee.toFixed(2) : '—'} {currentFee?.currency ?? SOURCE_CURRENCY}
             {savingsPct != null && <span> ({savingsPct.toFixed(2)}%)</span>}
           </div>
           {adjustedFee == null && baselineQuote && !baselineLoading && (
