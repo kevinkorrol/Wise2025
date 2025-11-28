@@ -4,6 +4,7 @@ type Currency int
 
 const (
 	EUR Currency = iota
+	DOLLAR
 )
 
 type Money struct {

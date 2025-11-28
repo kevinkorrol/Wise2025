@@ -20,7 +20,7 @@ export default function PromoSection() {
 
 
       {/* Headline */}
-      <h2 style={headlineStyle}>INTERNATIONAL MONEY TRANSFERS</h2>
+      <h1 style={headlineStyle}>INTERNATIONAL MONEY TRANSFERS</h1>
 
       {/* Description */}
       <p style={descriptionStyle}>
@@ -85,11 +85,13 @@ const ratingTextStyle: React.CSSProperties = {
 };
 
 const headlineStyle: React.CSSProperties = {
-  fontSize: "2.5rem",
-  fontWeight: 700,
+  fontSize: "3.5rem", // bigger size
+  fontWeight: 900,    // boldest allowed
   margin: 0,
   color: "#92D569",
+  letterSpacing: "1px", // optional, makes it stand out
 };
+
 
 const descriptionStyle: React.CSSProperties = {
   fontSize: "1.25rem",
