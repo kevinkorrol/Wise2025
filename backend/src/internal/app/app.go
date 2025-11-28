@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/kevinkorrol/Wise2025/internal/database"
+	"github.com/kevinkorrol/Wise2025/pkg/component/country"
+	"github.com/kevinkorrol/Wise2025/pkg/component/currency"
 	transaction2 "github.com/kevinkorrol/Wise2025/pkg/component/transaction"
+	"github.com/kevinkorrol/Wise2025/pkg/component/user"
 	"io"
 	"log"
 	"math/rand"
@@ -30,10 +33,66 @@ func New(listenAddress string) *App {
 func (a *App) Start() {
 	http.HandleFunc("/transaction", a.transactionEndpoint())
 	http.HandleFunc("/batch", a.batchEndpoint())
+	http.HandleFunc("/metrics", a.metricsEndpoint())
+
 	err := http.ListenAndServe(a.listenAddress, nil)
 	if err != nil {
 		log.Fatalf("Could not start App: %v\n", err)
 	}
+}
+
+func (a *App) CreateMockUsers() {
+	_ = a.db.AddUser(&user.User{
+		ID:                 1,
+		Email:              "john.doe@wise.com",
+		FullName:           "John Doe",
+		OriginatingCountry: "US",
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      2000.0,
+				Currency: currency.DOLLAR,
+			},
+		},
+	})
+
+	_ = a.db.AddUser(&user.User{
+		ID:                 2,
+		Email:              "jane.doe@wise.com",
+		FullName:           "Jane Doe",
+		OriginatingCountry: "US",
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      20000.0,
+				Currency: currency.DOLLAR,
+			},
+		},
+	})
+
+	_ = a.db.AddUser(&user.User{
+		ID:                 3,
+		Email:              "will.power@wise.com",
+		FullName:           "Will Power",
+		OriginatingCountry: "US",
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      25000.0,
+				Currency: currency.DOLLAR,
+			},
+		},
+	})
+
+	_ = a.db.AddUser(&user.User{
+		ID:                 4,
+		Email:              "hack.a.ton@wise.com",
+		FullName:           "Hack A. Ton",
+		OriginatingCountry: country.SouthAfricanRepublic,
+		AccountCurrencies: []currency.Money{
+			currency.Money{
+				Sum:      20000.0,
+				Currency: currency.ZAR,
+			},
+		},
+	})
 }
 
 // POST /transaction
@@ -60,7 +119,7 @@ func (a *App) makeTransaction(writer http.ResponseWriter, request *http.Request)
 	completed := transactionRequest.TransactionType == transaction2.TypeRegular
 
 	transaction := &transaction2.Transaction{
-		ID:             rand.Uint64(), // This is a hackathon, it's fine
+		ID:             uint64(rand.Uint32()), // This is a hackathon, it's fine
 		Owner:          user,
 		Name:           transactionRequest.Name,
 		Amount:         transactionRequest.Amount,
@@ -120,7 +179,7 @@ func (a *App) addTransactionToBatch(transaction *transaction2.Transaction) error
 	transactions := make([]*transaction2.Transaction, 1)
 	transactions[0] = transaction
 	batch = &transaction2.Batch{
-		ID:             rand.Uint64(),
+		ID:             uint64(rand.Uint32()),
 		Transactions:   transactions,
 		MinimumAmount:  minAmount,
 		TargetCurrency: transaction.TargetCurrency,
@@ -144,9 +203,19 @@ func (a *App) getTransactions(writer http.ResponseWriter, request *http.Request)
 		return
 	}
 
-	userID, err := strconv.Atoi(userIDString)
+	userID, err := strconv.ParseUint(userIDString, 10, 64)
 	if err != nil {
 		http.Error(writer, "Invalid user ID string", http.StatusBadRequest)
+		return
+	}
+
+	u, err := a.db.GetUserByID(uint64(userID))
+	if err != nil {
+		http.Error(writer, "Error getting user", http.StatusInternalServerError)
+		return
+	}
+	if u == nil {
+		http.Error(writer, "User does not exist", http.StatusBadRequest)
 		return
 	}
 
@@ -257,7 +326,7 @@ func (a *App) getBatch(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	transactionID, err := strconv.Atoi(transactionIDString)
+	transactionID, err := strconv.ParseUint(transactionIDString, 10, 64)
 	if err != nil {
 		http.Error(writer, "Invalid transaction ID string", http.StatusBadRequest)
 		return
@@ -266,6 +335,11 @@ func (a *App) getBatch(writer http.ResponseWriter, request *http.Request) {
 	batch, err := a.db.GetBatchTransactionIsPartOfByID(uint64(transactionID))
 	if err != nil {
 		http.Error(writer, "Could not get batch for transaction", http.StatusInternalServerError)
+		return
+	}
+
+	if batch == nil {
+		http.Error(writer, "Did not find batch", http.StatusBadRequest)
 		return
 	}
 
@@ -290,6 +364,25 @@ func (a *App) batchEndpoint() http.HandlerFunc {
 			http.Error(writer, "", http.StatusMethodNotAllowed)
 			return
 		}
+	}
+}
+
+func (a *App) metricsEndpoint() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		batches, err := a.db.GetBatches()
+		if err != nil {
+			http.Error(writer, "Could not get batches from database", http.StatusInternalServerError)
+			return
+		}
+
+		activeBatches := make([]*transaction2.Batch, 0)
+		for _, b := range batches {
+			if !b.IsFull() {
+				activeBatches = append(activeBatches, b)
+			}
+		}
+
+		sendResponseJson(writer, &activeBatches)
 	}
 }
 

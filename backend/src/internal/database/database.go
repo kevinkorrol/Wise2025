@@ -24,4 +24,5 @@ type Database interface {
 	GetBatchTransactionIsPartOfByID(transactionID uint64) (*transaction.Batch, error)
 	GetExistingBatchTransactionForCurrency(fromCurrency, toCurrency currency.Currency) (*transaction.Batch, error)
 	CompleteBatch(batchID uint64, completeTime time.Time) error
+	GetBatches() ([]*transaction.Batch, error)
 }

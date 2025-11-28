@@ -4,6 +4,6 @@ WORKDIR /app
 
 COPY app.py .
 
-RUN pip install prometheus_client
+RUN pip install prometheus_client requests
 
 CMD ["python", "app.py"]

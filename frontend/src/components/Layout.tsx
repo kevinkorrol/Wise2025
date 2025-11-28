@@ -29,7 +29,7 @@ const FALLBACK: TransactionData = {
 }
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const [showTracking, setShowTracking] = useState(false)
+  const [showTracking, setShowTracking] = useState(true)
   const [txn, setTxn] = useState<TransactionData>(FALLBACK)
 
   useEffect(() => {

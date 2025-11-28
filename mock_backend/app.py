@@ -1,4 +1,3 @@
-
 from prometheus_client import start_http_server, Gauge
 import random
 import time
@@ -8,7 +7,7 @@ PORT = 8081
 UPDATE_INTERVAL_SECONDS = 5
 COUNTRIES = ['RSA']
 BATCH_IDS = [101, 102]
-THRESHOLD = 20000
+THRESHOLD = 25000
 MIN_GROWTH = 500    # minimum growth per cycle
 MAX_GROWTH = 3000   # maximum growth per cycle
 

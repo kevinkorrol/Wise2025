@@ -1,10 +1,11 @@
 package currency
 
-type Currency int
+type Currency string
 
 const (
-	EUR Currency = iota
-	DOLLAR
+	EUR    Currency = "EUR"
+	DOLLAR Currency = "USD"
+	ZAR    Currency = "ZAR"
 )
 
 type Money struct {
