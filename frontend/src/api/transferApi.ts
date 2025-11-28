@@ -10,7 +10,7 @@ export async function sendTransfer(data: any) {
 
   if (!response.ok) {
     throw new Error("Failed to submit transfer");
+  } else {
+    console.log("POST REQUEST SUCCESS!");
   }
-
-  return await response.json();
 }
