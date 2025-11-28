@@ -1,30 +1,190 @@
 {
-  "dashboard": {
-    "id": null,
-    "title": "Batches Dashboard",
-    "tags": [],
-    "timezone": "browser",
-    "panels": [
+  "annotations": {
+    "list": [
       {
-        "type": "bar",
-        "title": "Total Money per Batch",
-        "targets": [
-          {
-            "expr": "batch_total_amount",
-            "format": "time_series"
-          }
-        ]
-      },
-      {
-        "type": "bar",
-        "title": "Number of Transactions per Batch",
-        "targets": [
-          {
-            "expr": "batch_num_transactions",
-            "format": "time_series"
-          }
-        ]
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
       }
     ]
-  }
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "expr": "user_money{origin_currency=\"EUR\",destination_currency=\"USD\"}",
+          "format": "table",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Users List",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "0": "origin_currency",
+              "1": "destination_currency",
+              "__name__": true,
+              "instance": true,
+              "job": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "Time": 0,
+              "Value": 7,
+              "__name__": 1,
+              "destination_currency": 6,
+              "instance": 2,
+              "job": 3,
+              "name": 4,
+              "origin_currency": 5
+            },
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 25000,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 12500
+              },
+              {
+                "color": "orange",
+                "value": 20000
+              },
+              {
+                "color": "red",
+                "value": 25000
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 2,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
+        {
+          "expr": "sum(user_money{origin_currency=\"EUR\",destination_currency=\"USD\"})",
+          "instant": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Total User Money",
+      "type": "gauge"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "User Money Dashboard",
+  "uid": "adq6fld",
+  "version": 2
 }
