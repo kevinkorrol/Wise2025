@@ -119,7 +119,7 @@ func (a *App) makeTransaction(writer http.ResponseWriter, request *http.Request)
 	completed := transactionRequest.TransactionType == transaction2.TypeRegular
 
 	transaction := &transaction2.Transaction{
-		ID:             rand.Uint64(), // This is a hackathon, it's fine
+		ID:             uint64(rand.Uint32()), // This is a hackathon, it's fine
 		Owner:          user,
 		Name:           transactionRequest.Name,
 		Amount:         transactionRequest.Amount,
@@ -179,7 +179,7 @@ func (a *App) addTransactionToBatch(transaction *transaction2.Transaction) error
 	transactions := make([]*transaction2.Transaction, 1)
 	transactions[0] = transaction
 	batch = &transaction2.Batch{
-		ID:             rand.Uint64(),
+		ID:             uint64(rand.Uint32()),
 		Transactions:   transactions,
 		MinimumAmount:  minAmount,
 		TargetCurrency: transaction.TargetCurrency,
@@ -203,7 +203,7 @@ func (a *App) getTransactions(writer http.ResponseWriter, request *http.Request)
 		return
 	}
 
-	userID, err := strconv.Atoi(userIDString)
+	userID, err := strconv.ParseUint(userIDString, 10, 64)
 	if err != nil {
 		http.Error(writer, "Invalid user ID string", http.StatusBadRequest)
 		return
@@ -326,7 +326,7 @@ func (a *App) getBatch(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	transactionID, err := strconv.Atoi(transactionIDString)
+	transactionID, err := strconv.ParseUint(transactionIDString, 10, 64)
 	if err != nil {
 		http.Error(writer, "Invalid transaction ID string", http.StatusBadRequest)
 		return
@@ -335,6 +335,11 @@ func (a *App) getBatch(writer http.ResponseWriter, request *http.Request) {
 	batch, err := a.db.GetBatchTransactionIsPartOfByID(uint64(transactionID))
 	if err != nil {
 		http.Error(writer, "Could not get batch for transaction", http.StatusInternalServerError)
+		return
+	}
+
+	if batch == nil {
+		http.Error(writer, "Did not find batch", http.StatusBadRequest)
 		return
 	}
 

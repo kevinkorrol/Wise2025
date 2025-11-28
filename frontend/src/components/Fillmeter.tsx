@@ -29,10 +29,21 @@ export default function Fillmeter(props: FillmeterProps) {
   } : null)
 
   useEffect(() => {
-    if (data) return
-    let cancelled = false
-   
+    if (data) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        console.log("Here")
+        const json = await getPool()
+        console.log('getPool resolved', json)
+        if (cancelled) return
+      } catch (err) {
+      console.error('getPool rejected', err)
+      if (cancelled) return
+      }})()
+
    getPool().then((json) => {
+    console.log(json)
         if (cancelled) return
         setData({
           id: json.ID,

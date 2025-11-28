@@ -21,10 +21,11 @@ export async function getTransferID() {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to submit transfer");
+    throw new Error("Failed to get transfer");
   }
 
   let transfer = await response.json();
+  console.log(transfer)
   return transfer[0]["ID"]
 }
 type Currency = 'EUR' | 'DOLLAR'
@@ -47,7 +48,8 @@ export async function getPool() {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to submit transfer");
+    console.log(`/api/backend/batch?transaction_id=${ID}`)
+    throw new Error("Failed to get batch");
   }
 
   return await response.json() as PoolResponse;
