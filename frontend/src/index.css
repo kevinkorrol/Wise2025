@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,17 +15,15 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #646363;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #0e5518;
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
