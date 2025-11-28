@@ -150,7 +150,7 @@ export default function CalculateFee({ amount: propAmount }: { amount?: string |
     : null
 
   return (
-    <div style={{ maxWidth: 520 }}>
+    <div style={{ width: 550 }}>
       <h2 style={{ marginBottom: 12, color: '#111827' }}>Calculate Transfer Fee With Pooling</h2>
       <form onSubmit={onSubmit} style={{ display: 'grid', gap: 12 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', color: '#111827' }}>
@@ -166,7 +166,8 @@ export default function CalculateFee({ amount: propAmount }: { amount?: string |
           type="submit"
           disabled={loading}
           style={{
-            padding: '10px 16px',
+            width: '100%',
+            padding: '0.75rem',
             borderRadius: 8,
             fontWeight: 600,
             background: '#111827',
