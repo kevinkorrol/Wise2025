@@ -5,31 +5,31 @@ export default function Sidebar() {
   return (
     <aside className="app-sidebar">
       <nav>
-        <Link to="/account">
+        <Link to="/history">
           <Icon icon="mdi:home" width="18" />
           Home
         </Link>
-        <Link to="/money">
+        <Link to="/history">
           <Icon icon="mdi:cash-multiple" width="18" />
           Money
         </Link>
-        <Link to="/">
+        <Link to="/history">
           <Icon icon="mdi:credit-card-outline" width="18" />
           Cards
         </Link>
-        <Link to="/">
+        <Link to="/history">
           <Icon icon="mdi:swap-horizontal" width="18" />
           Transactions
         </Link>
-        <Link to="/">
+        <Link to="/history">
           <Icon icon="mdi:send" width="18" />
           Payments
         </Link>
-        <Link to="/">
+        <Link to="/history">
           <Icon icon="mdi:account-multiple-outline" width="18" />
           Recipients
         </Link>
-        <Link to="/">
+        <Link to="/history">
           <Icon icon="mdi:chart-line" width="18" />
           Insights
         </Link>
