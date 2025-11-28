@@ -31,8 +31,8 @@ type UpdateTransactionRequest struct {
 	TransactionType transaction.TransactionType
 }
 
-// GET /batch
-type GetBatchInfoRequest struct {
+// GET /batch?transaction_id=1
+type GetBatchInfoResponse struct {
 	ID             uint64
 	CurrentAmount  currency.Money
 	MinimumAmount  currency.Money

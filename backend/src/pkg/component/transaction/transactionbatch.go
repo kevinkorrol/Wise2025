@@ -23,13 +23,20 @@ type Batch struct {
 }
 
 func (b *Batch) IsFull() bool {
+
+	if b.CurrentSum().Sum >= b.MinimumAmount.Sum {
+		return true
+	}
+	return false
+}
+
+func (b *Batch) CurrentSum() currency.Money {
 	var sum float64 = 0
 	for _, transaction := range b.Transactions {
 		sum += transaction.Amount.Sum
 	}
-
-	if sum >= b.MinimumAmount.Sum {
-		return true
+	return currency.Money{
+		Currency: b.MinimumAmount.Currency,
+		Sum:      sum,
 	}
-	return false
 }
