@@ -1,6 +1,6 @@
 // src/api/transferApi.ts
 export async function sendTransfer(data: any) {
-  const response = await fetch("http://localhost:8080/transfer", {
+  const response = await fetch("/api/backend/transaction", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

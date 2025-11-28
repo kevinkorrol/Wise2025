@@ -21,6 +21,11 @@ export default defineConfig({
         // Optionally add headers here; we rely on frontend passing Authorization.
         // headers: { Authorization: `Bearer ${process.env.VITE_WISE_API_TOKEN || ''}` }
       },
+        '/api/backend': {
+          target: 'http://backend:8080',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api\/backend/, ''),
+        },
     },
   },
 })

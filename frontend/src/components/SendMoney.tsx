@@ -16,12 +16,14 @@ export default function SendMoney({ onSubmit }: { onSubmit: (data: any) => void 
   const handleSendMoney = () => {
     if (onSubmit) {
       const payload = {
-        sendAmount,
-        receiveAmount,
-        sendCurrency,
-        receiveCurrency,
-        exchangeRate,
-      };
+      UserID: 1, // replace with actual logged-in user ID
+      Name: "John Doe", // replace with real user name
+      Amount: {
+        Value: parseFloat(sendAmount),
+        Currency: sendCurrency,
+      },
+      TransactionType: 1, // must match backend enum
+    };
       onSubmit(payload);      // use parent page’s action
     } else {
       navigate("/transfer"); // default behavior

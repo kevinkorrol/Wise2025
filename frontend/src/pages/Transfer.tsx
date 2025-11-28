@@ -7,14 +7,15 @@ export default function Transfer() {
 
   const handleSubmit = async (formData: any) => {
     try {
+      // Attempt to submit transfer to backend
       await sendTransfer(formData);
     } catch (error) {
-      console.error("Transfer failed silently:", error);
-      // no alert, no blockage
+      // Log error silently
+      console.error("Transfer submission failed:", error);
+    } finally {
+      // Always redirect, regardless of backend success/failure
+      navigate("/history");
     }
-
-    // Always redirect
-    navigate("/history");
   };
 
   return (
