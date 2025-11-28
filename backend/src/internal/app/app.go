@@ -224,18 +224,6 @@ func (a *App) updateTransaction(writer http.ResponseWriter, request *http.Reques
 			http.Error(writer, "Error completing transaction", http.StatusInternalServerError)
 			return
 		}
-
-		batch, err := a.db.GetBatchTransactionIsPartOfByID(transaction.ID)
-		if err != nil {
-			http.Error(writer, "could not find batch transaction is part of", http.StatusInternalServerError)
-			return
-		}
-
-		err = a.db.RemoveTransactionFromBatchByID(batch.ID, transaction.ID)
-		if err != nil {
-			http.Error(writer, "could not remove transaction from batch", http.StatusInternalServerError)
-			return
-		}
 	}
 }
 

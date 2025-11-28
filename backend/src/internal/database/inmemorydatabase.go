@@ -64,11 +64,24 @@ func (db *InMemoryDB) GetUserTransactionsByID(userID uint64) ([]*transaction.Tra
 }
 
 func (db *InMemoryDB) RemoveTransactionByID(transactionID uint64) error {
+	b, err := db.GetBatchTransactionIsPartOfByID(transactionID)
+	if err != nil {
+		return err
+	}
+
+	if b != nil {
+		err = db.RemoveTransactionFromBatchByID(b.ID, transactionID)
+		if err != nil {
+			return err
+		}
+	}
+
 	for idx, t := range db.transactions {
 		if t.ID == transactionID {
 			db.transactions = remove(db.transactions, idx)
 		}
 	}
+
 	return nil
 }
 
@@ -80,6 +93,18 @@ func (db *InMemoryDB) CompleteTransactionByID(transactionID uint64) error {
 
 	if t == nil {
 		return errors.New("unknown transaction ID")
+	}
+
+	b, err := db.GetBatchTransactionIsPartOfByID(transactionID)
+	if err != nil {
+		return err
+	}
+
+	if b != nil {
+		err = db.RemoveTransactionFromBatchByID(b.ID, transactionID)
+		if err != nil {
+			return err
+		}
 	}
 
 	t.Completed = true
