@@ -275,6 +275,18 @@
   margin-top: 8px;
 }
 
+/* Make all Fillmeter texts black (override muted) */
+.fillmeter,
+.fillmeter .muted {
+  color: #111827;
+}
+
+/* Nudge only the Current value higher, not the dates */
+.fillmeter-current {
+  align-self: flex-start;
+  margin-top: -0px;
+}
+
 /* Inline Fillmeter placement inside timeline */
 .timeline-insert {
   padding-left: 28px; /* align with labels inside timeline */

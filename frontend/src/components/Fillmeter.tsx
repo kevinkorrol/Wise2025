@@ -16,6 +16,7 @@ type PoolResponse = {
   MinimumAmount: { Sum: number; Currency: Currency }
   TargetCurrency: Currency
   StartTime: string
+  EstimatedCompletion?: string
 }
 
 export default function Fillmeter(props: FillmeterProps) {
@@ -25,6 +26,7 @@ export default function Fillmeter(props: FillmeterProps) {
     minimumAmount: { sum: number; currency: Currency }
     targetCurrency: Currency
     startTime: string
+    estimatedCompletion?: string
   } | null>(props.currentAmount && props.minimumAmount && props.targetCurrency && props.startTime ? {
     id: props.id ?? 0,
     currentAmount: props.currentAmount!,
@@ -49,6 +51,7 @@ export default function Fillmeter(props: FillmeterProps) {
           minimumAmount: { sum: json.MinimumAmount.Sum, currency: json.MinimumAmount.Currency },
           targetCurrency: json.TargetCurrency,
           startTime: json.StartTime,
+          estimatedCompletion: json.EstimatedCompletion,
         })
       })
       .catch(() => {
@@ -59,6 +62,7 @@ export default function Fillmeter(props: FillmeterProps) {
           minimumAmount: { sum: 100000, currency: 'EUR' },
           targetCurrency: 'EUR',
           startTime: new Date().toISOString(),
+          estimatedCompletion: new Date(Date.now() + 45 * 60 * 1000).toISOString(),
         })
       })
     return () => { cancelled = true }
@@ -69,6 +73,8 @@ export default function Fillmeter(props: FillmeterProps) {
   const pct = min > 0 ? Math.min(100, Math.round((cur / min) * 100)) : 0
   const started = new Date(data?.startTime ?? '')
   const startedLabel = isNaN(started.getTime()) ? '' : started.toLocaleString()
+  const estimated = new Date(data?.estimatedCompletion ?? '')
+  const estimatedLabel = isNaN(estimated.getTime()) ? '' : estimated.toLocaleString()
 
   return (
     <div className="fillmeter" aria-label="Pool progress">
@@ -83,9 +89,12 @@ export default function Fillmeter(props: FillmeterProps) {
       </div>
       <div className="fillmeter-stats">
         {data && (
-          <span className="muted">Current: {cur.toLocaleString()} {data.currentAmount.currency}</span>
+          <span className="muted fillmeter-current">Current: {cur.toLocaleString()} {data.currentAmount.currency}</span>
         )}
-        {startedLabel && <span className="muted">Started: {startedLabel}</span>}
+        <div style={{ textAlign: 'right' }}>
+          {startedLabel && <div className="muted">Started: {startedLabel}</div>}
+          {estimatedLabel && <div className="muted">Estimation: {estimatedLabel}</div>}
+        </div>
       </div>
     </div>
   )
