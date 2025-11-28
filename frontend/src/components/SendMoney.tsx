@@ -7,8 +7,8 @@ import CalculateFee2 from "./calculateFee2";
 
 export default function SendMoney({ onSubmit }: { onSubmit: (data: any) => void }) {
   const navigate = useNavigate();
-  const [sendAmount, setSendAmount] = useState("25000");
-  const [receiveAmount, setReceiveAmount] = useState("425509.57");
+  const [sendAmount, setSendAmount] = useState("150");
+  const [receiveAmount, setReceiveAmount] = useState("2568.21");
   const [sendCurrency] = useState("USD");
   const [receiveCurrency] = useState("ZAR");
   const exchangeRate = 17.1214;
@@ -19,7 +19,7 @@ export default function SendMoney({ onSubmit }: { onSubmit: (data: any) => void 
       UserID: 1, // replace with actual logged-in user ID
       Name: "John Doe", // replace with real user name
       Amount: {
-        Value: parseFloat(sendAmount),
+        Sum: parseFloat(sendAmount),
         Currency: sendCurrency,
       },
       TransactionType: 1, // must match backend enum

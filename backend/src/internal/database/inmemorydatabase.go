@@ -169,7 +169,7 @@ func (db *InMemoryDB) GetBatchTransactionIsPartOfByID(transactionID uint64) (*tr
 
 func (db *InMemoryDB) GetExistingBatchTransactionForCurrency(fromCurrency, toCurrency currency.Currency) (*transaction.Batch, error) {
 	for _, b := range db.batches {
-		if b.CompleteTime.Compare(b.StartTime) == 1 {
+		if b.CompleteTime.Compare(b.StartTime) == 1 || b.IsFull() {
 			continue // batch is complete
 		}
 		if b.MinimumAmount.Currency == fromCurrency && b.TargetCurrency == toCurrency {

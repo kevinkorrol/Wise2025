@@ -26,7 +26,7 @@ export async function getTransferID() {
 
   let transfer = await response.json();
   console.log(transfer)
-  return transfer[0]["ID"]
+  return transfer[transfer.length - 1]["ID"]
 }
 type Currency = 'EUR' | 'DOLLAR'
 
