@@ -1,32 +1,243 @@
-[
-  {"username": "alice", "amount": 10.5, "destination_country": "Kenya", "batch_id": 1, "date": "2025-11-21T10:12:00Z"},
-  {"username": "bob", "amount": 5.0, "destination_country": "Kenya", "batch_id": 1, "date": "2025-11-21T10:15:00Z"},
-  {"username": "carol", "amount": 7.25, "destination_country": "Kenya", "batch_id": 1, "date": "2025-11-21T10:18:00Z"},
-  
-  {"username": "dave", "amount": 12.0, "destination_country": "India", "batch_id": 2, "date": "2025-11-21T11:00:00Z"},
-  {"username": "eve", "amount": 8.5, "destination_country": "India", "batch_id": 2, "date": "2025-11-21T11:05:00Z"},
-  {"username": "frank", "amount": 15.0, "destination_country": "India", "batch_id": 2, "date": "2025-11-21T11:10:00Z"},
-
-  {"username": "grace", "amount": 20.0, "destination_country": "Philippines", "batch_id": 3, "date": "2025-11-22T09:30:00Z"},
-  {"username": "heidi", "amount": 5.5, "destination_country": "Philippines", "batch_id": 3, "date": "2025-11-22T09:35:00Z"},
-  {"username": "ivan", "amount": 7.75, "destination_country": "Philippines", "batch_id": 3, "date": "2025-11-22T09:40:00Z"},
-
-  {"username": "judy", "amount": 3.5, "destination_country": "Nigeria", "batch_id": 4, "date": "2025-11-22T12:00:00Z"},
-  {"username": "ken", "amount": 4.25, "destination_country": "Nigeria", "batch_id": 4, "date": "2025-11-22T12:05:00Z"},
-  {"username": "leo", "amount": 6.0, "destination_country": "Nigeria", "batch_id": 4, "date": "2025-11-22T12:10:00Z"},
-
-  {"username": "mallory", "amount": 9.0, "destination_country": "Kenya", "batch_id": 5, "date": "2025-11-23T14:20:00Z"},
-  {"username": "nina", "amount": 6.5, "destination_country": "India", "batch_id": 6, "date": "2025-11-23T15:00:00Z"},
-  {"username": "oscar", "amount": 11.0, "destination_country": "Philippines", "batch_id": 7, "date": "2025-11-24T08:45:00Z"},
-  {"username": "peggy", "amount": 4.75, "destination_country": "Nigeria", "batch_id": 8, "date": "2025-11-24T09:10:00Z"},
-
-  {"username": "quinn", "amount": 7.5, "destination_country": "Kenya", "batch_id": 5, "date": "2025-11-23T14:25:00Z"},
-  {"username": "rachel", "amount": 12.25, "destination_country": "India", "batch_id": 6, "date": "2025-11-23T15:05:00Z"},
-  {"username": "steve", "amount": 9.75, "destination_country": "Philippines", "batch_id": 7, "date": "2025-11-24T08:50:00Z"},
-  {"username": "trudy", "amount": 5.0, "destination_country": "Nigeria", "batch_id": 8, "date": "2025-11-24T09:15:00Z"},
-
-  {"username": "uma", "amount": 8.5, "destination_country": "Kenya", "batch_id": 5, "date": "2025-11-23T14:30:00Z"},
-  {"username": "victor", "amount": 7.0, "destination_country": "India", "batch_id": 6, "date": "2025-11-23T15:10:00Z"},
-  {"username": "wendy", "amount": 10.25, "destination_country": "Philippines", "batch_id": 7, "date": "2025-11-24T08:55:00Z"},
-  {"username": "xander", "amount": 6.5, "destination_country": "Nigeria", "batch_id": 8, "date": "2025-11-24T09:20:00Z"}
-]
+{
+  "Users": [
+    {
+      "ID": 1,
+      "Email": "user1@example.com",
+      "FullName": "User 1",
+      "OriginatingCountry": "EST",
+      "AccountCurrencies": [
+        {
+          "Amount": 824.27,
+          "Currency": "KES"
+        }
+      ]
+    },
+    {
+      "ID": 2,
+      "Email": "user2@example.com",
+      "FullName": "User 2",
+      "OriginatingCountry": "US",
+      "AccountCurrencies": [
+        {
+          "Amount": 793.26,
+          "Currency": "INR"
+        }
+      ]
+    },
+    {
+      "ID": 3,
+      "Email": "user3@example.com",
+      "FullName": "User 3",
+      "OriginatingCountry": "EST",
+      "AccountCurrencies": [
+        {
+          "Amount": 539.16,
+          "Currency": "KES"
+        }
+      ]
+    },
+    {
+      "ID": 4,
+      "Email": "user4@example.com",
+      "FullName": "User 4",
+      "OriginatingCountry": "US",
+      "AccountCurrencies": [
+        {
+          "Amount": 808.98,
+          "Currency": "EUR"
+        }
+      ]
+    },
+    {
+      "ID": 5,
+      "Email": "user5@example.com",
+      "FullName": "User 5",
+      "OriginatingCountry": "US",
+      "AccountCurrencies": [
+        {
+          "Amount": 353.24,
+          "Currency": "EUR"
+        }
+      ]
+    }
+  ],
+  "Transactions": [
+    {
+      "ID": 1,
+      "Name": "Transaction 1",
+      "Owner": "User 1",
+      "Amount": {
+        "Amount": 32.94,
+        "Currency": "EUR"
+      },
+      "Type": "TypeBatch",
+      "TargetCurrency": "EUR",
+      "Timestamp": "2025-11-28T09:40:38.908114Z",
+      "Completed": true
+    },
+    {
+      "ID": 2,
+      "Name": "Transaction 2",
+      "Owner": "User 4",
+      "Amount": {
+        "Amount": 6.72,
+        "Currency": "EUR"
+      },
+      "Type": "TypeFastTrack",
+      "TargetCurrency": "KES",
+      "Timestamp": "2025-11-28T08:06:38.908141Z",
+      "Completed": false
+    },
+    {
+      "ID": 3,
+      "Name": "Transaction 3",
+      "Owner": "User 1",
+      "Amount": {
+        "Amount": 30.86,
+        "Currency": "KES"
+      },
+      "Type": "TypeBatch",
+      "TargetCurrency": "EUR",
+      "Timestamp": "2025-11-28T09:04:38.908153Z",
+      "Completed": true
+    },
+    {
+      "ID": 4,
+      "Name": "Transaction 4",
+      "Owner": "User 2",
+      "Amount": {
+        "Amount": 18.57,
+        "Currency": "KES"
+      },
+      "Type": "TypeRegular",
+      "TargetCurrency": "USD",
+      "Timestamp": "2025-11-28T08:45:38.908161Z",
+      "Completed": true
+    },
+    {
+      "ID": 5,
+      "Name": "Transaction 5",
+      "Owner": "User 5",
+      "Amount": {
+        "Amount": 21.28,
+        "Currency": "INR"
+      },
+      "Type": "TypeRegular",
+      "TargetCurrency": "INR",
+      "Timestamp": "2025-11-28T07:39:38.908168Z",
+      "Completed": false
+    },
+    {
+      "ID": 6,
+      "Name": "Transaction 6",
+      "Owner": "User 2",
+      "Amount": {
+        "Amount": 25.29,
+        "Currency": "INR"
+      },
+      "Type": "TypeRegular",
+      "TargetCurrency": "INR",
+      "Timestamp": "2025-11-28T08:03:38.908174Z",
+      "Completed": true
+    },
+    {
+      "ID": 7,
+      "Name": "Transaction 7",
+      "Owner": "User 5",
+      "Amount": {
+        "Amount": 40.45,
+        "Currency": "INR"
+      },
+      "Type": "TypeFastTrack",
+      "TargetCurrency": "KES",
+      "Timestamp": "2025-11-28T04:50:38.908181Z",
+      "Completed": false
+    },
+    {
+      "ID": 8,
+      "Name": "Transaction 8",
+      "Owner": "User 4",
+      "Amount": {
+        "Amount": 32.85,
+        "Currency": "KES"
+      },
+      "Type": "TypeRegular",
+      "TargetCurrency": "KES",
+      "Timestamp": "2025-11-28T10:25:38.908188Z",
+      "Completed": false
+    },
+    {
+      "ID": 9,
+      "Name": "Transaction 9",
+      "Owner": "User 5",
+      "Amount": {
+        "Amount": 42.36,
+        "Currency": "INR"
+      },
+      "Type": "TypeFastTrack",
+      "TargetCurrency": "EUR",
+      "Timestamp": "2025-11-28T11:12:38.908196Z",
+      "Completed": true
+    },
+    {
+      "ID": 10,
+      "Name": "Transaction 10",
+      "Owner": "User 3",
+      "Amount": {
+        "Amount": 47.16,
+        "Currency": "KES"
+      },
+      "Type": "TypeFastTrack",
+      "TargetCurrency": "EUR",
+      "Timestamp": "2025-11-28T09:13:38.908210Z",
+      "Completed": false
+    }
+  ],
+  "Batches": [
+    {
+      "ID": 1,
+      "Transactions": [
+        6,
+        4,
+        1
+      ],
+      "MinimumAmount": {
+        "Amount": 100.0,
+        "Currency": "EUR"
+      },
+      "TargetCurrency": "INR",
+      "StartTime": "2025-11-28T08:24:38.908497Z",
+      "CompleteTime": "2025-11-28T16:24:38.908516Z"
+    },
+    {
+      "ID": 2,
+      "Transactions": [
+        8,
+        3,
+        1
+      ],
+      "MinimumAmount": {
+        "Amount": 100.0,
+        "Currency": "EUR"
+      },
+      "TargetCurrency": "INR",
+      "StartTime": "2025-11-28T08:24:38.908530Z",
+      "CompleteTime": "2025-11-28T13:24:38.908535Z"
+    },
+    {
+      "ID": 3,
+      "Transactions": [
+        4,
+        6,
+        10
+      ],
+      "MinimumAmount": {
+        "Amount": 100.0,
+        "Currency": "EUR"
+      },
+      "TargetCurrency": "USD",
+      "StartTime": "2025-11-28T06:24:38.908543Z",
+      "CompleteTime": "2025-11-28T14:24:38.908546Z"
+    }
+  ]
+}
