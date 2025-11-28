@@ -6,14 +6,13 @@ import (
 	"time"
 )
 
-type TransferCurrencies struct {
-	SourceCurrency      currency.Currency
-	DestinationCurrency currency.Currency
-}
 type Transaction struct {
-	ID                 uint64
-	Owner              *user.User
-	MinimumAmount      currency.Money
-	TransferCurrencies *TransferCurrencies
-	Timestamp          time.Time
+	ID             uint64
+	Name           string
+	Owner          *user.User
+	Amount         currency.Money
+	Type           TransactionType
+	TargetCurrency currency.Currency
+	Timestamp      time.Time
+	Completed      bool
 }
