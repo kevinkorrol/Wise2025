@@ -1,6 +1,6 @@
 {
   "id": "txn_123",
-  "name": "Rent Payment",
+  "name": "Payment to John Doe",
   "date": "2025-11-28T09:30:00Z",
   "from": "EE909900123456789011 WiseGuys",
   "to": "EE909900123456789012 John Doe",
