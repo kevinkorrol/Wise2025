@@ -209,6 +209,16 @@ func (a *App) getTransactions(writer http.ResponseWriter, request *http.Request)
 		return
 	}
 
+	u, err := a.db.GetUserByID(uint64(userID))
+	if err != nil {
+		http.Error(writer, "Error getting user", http.StatusInternalServerError)
+		return
+	}
+	if u == nil {
+		http.Error(writer, "User does not exist", http.StatusBadRequest)
+		return
+	}
+
 	transactions, err := a.db.GetUserTransactionsByID(uint64(userID))
 	if err != nil {
 		http.Error(writer, "Error getting transactions", http.StatusInternalServerError)
