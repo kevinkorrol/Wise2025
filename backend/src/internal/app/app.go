@@ -249,13 +249,47 @@ func (a *App) transactionEndpoint() http.HandlerFunc {
 	}
 }
 
+func (a *App) getBatch(writer http.ResponseWriter, request *http.Request) {
+	q := request.URL.Query()
+	transactionIDString := q.Get("transaction_id")
+	if transactionIDString == "" {
+		http.Error(writer, "No transaction ID specified", http.StatusBadRequest)
+		return
+	}
+
+	transactionID, err := strconv.Atoi(transactionIDString)
+	if err != nil {
+		http.Error(writer, "Invalid transaction ID string", http.StatusBadRequest)
+		return
+	}
+
+	batch, err := a.db.GetBatchTransactionIsPartOfByID(uint64(transactionID))
+	if err != nil {
+		http.Error(writer, "Could not get batch for transaction", http.StatusInternalServerError)
+		return
+	}
+
+	batchResponse := &GetBatchInfoResponse{
+		ID:             batch.ID,
+		CurrentAmount:  batch.CurrentSum(),
+		MinimumAmount:  batch.MinimumAmount,
+		TargetCurrency: batch.TargetCurrency,
+		StartTime:      batch.StartTime,
+	}
+
+	sendResponseJson(writer, batchResponse)
+}
+
 func (a *App) batchEndpoint() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		if request.Method != http.MethodGet {
+		switch request.Method {
+		case http.MethodGet:
+			a.getBatch(writer, request)
+			return
+		default:
 			http.Error(writer, "", http.StatusMethodNotAllowed)
 			return
 		}
-
 	}
 }
 
