@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
+import Home from "./pages/Home"
 import Money from './pages/Money'
 import Transfer from "./pages/Transfer"
 import Account from './pages/Account'
@@ -9,6 +10,7 @@ function App() {
     <>
 
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/account" element={<Account />} />
         <Route path="/money" element={<Money />} />
         <Route path="/transfer" element={<Transfer />} />
