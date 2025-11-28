@@ -35,3 +35,9 @@ services:
     volumes:
       - ./grafana/dashboards:/var/lib/grafana/dashboards
       - ./grafana/provisioning:/etc/grafana/provisioning
+  
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8080:8080"
