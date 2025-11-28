@@ -8,7 +8,7 @@ import (
 )
 
 type Database interface {
-	AddUser(user *user.User) error
+	AddUser(u *user.User) error
 	GetUserByID(ID uint64) (*user.User, error)
 
 	AddTransaction(transaction *transaction.Transaction) error
@@ -18,9 +18,9 @@ type Database interface {
 	CompleteTransactionByID(transactionID uint64) error
 
 	AddBatchTransaction(batch *transaction.Batch) error
+	GetBatchTransactionByID(batchID uint64) (*transaction.Batch, error)
 	AddTransactionToBatchByID(batchID, transactionID uint64) error
 	RemoveTransactionFromBatchByID(batchID, transactionID uint64) error
-	GetBatchTransactionByID(batchID uint64) (*transaction.Batch, error)
 	GetBatchTransactionIsPartOfByID(transactionID uint64) (*transaction.Batch, error)
 	GetExistingBatchTransactionForCurrency(fromCurrency, toCurrency currency.Currency) (*transaction.Batch, error)
 	CompleteBatch(batchID uint64, completeTime time.Time) error
