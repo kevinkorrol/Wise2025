@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import Money from './pages/Money'
+import Transfer from "./pages/Transfer"
 
 function Home() {
   const [count, setCount] = useState(0)
@@ -43,6 +44,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/money" element={<Money />} />
+        <Route path="/transfer" element={<Transfer />} />
         {/* optional: catch-all */}
         <Route path="*" element={<Home />} />
       </Routes>
