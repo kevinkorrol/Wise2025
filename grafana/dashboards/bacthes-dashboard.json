@@ -1,0 +1,30 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Batches Dashboard",
+    "tags": [],
+    "timezone": "browser",
+    "panels": [
+      {
+        "type": "bar",
+        "title": "Total Money per Batch",
+        "targets": [
+          {
+            "expr": "batch_total_amount",
+            "format": "time_series"
+          }
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "Number of Transactions per Batch",
+        "targets": [
+          {
+            "expr": "batch_num_transactions",
+            "format": "time_series"
+          }
+        ]
+      }
+    ]
+  }
+}
