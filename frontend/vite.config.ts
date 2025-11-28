@@ -10,4 +10,17 @@ export default defineConfig({
       },
     }),
   ],
+  server: {
+    proxy: {
+      // Local dev calls like fetch('/api/wise/v3/quotes/')
+      '/api/wise': {
+        target: 'https://api.wise-sandbox.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api\/wise/, ''),
+        // Optionally add headers here; we rely on frontend passing Authorization.
+        // headers: { Authorization: `Bearer ${process.env.VITE_WISE_API_TOKEN || ''}` }
+      },
+    },
+  },
 })

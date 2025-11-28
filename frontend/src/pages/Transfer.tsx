@@ -7,7 +7,7 @@ export default function Transfer() {
 
       <input type="number" placeholder="Enter amount" />
 
-      <Fillmeter progress={50} />
+      <Fillmeter />
 
       <button>Continue</button>
     </div>

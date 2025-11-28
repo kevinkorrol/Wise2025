@@ -33,6 +33,10 @@ export default function Sidebar() {
           <Icon icon="mdi:chart-line" width="18" />
           Insights
         </Link>
+        <Link to="/calculate">
+          <Icon icon="mdi:calculator" width="18" />
+          Fee Calculator
+        </Link>
         {/* Add more links as your app grows */}
       </nav>
     </aside>
