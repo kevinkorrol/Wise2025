@@ -5,7 +5,7 @@ import InfoIcon from "../assets/globe-img.png";
 import usaFlag from "../assets/flag-usa.svg";
 import zaFlag from "../assets/flag-za.svg";
 
-export default function SendMoney({ onSubmit }: { onSubmit?: () => void }) {
+export default function SendMoney({ onSubmit }: { onSubmit: (data: any) => void }) {
   const navigate = useNavigate();
   const [sendAmount, setSendAmount] = useState("25000");
   const [receiveAmount, setReceiveAmount] = useState("425509.57");
@@ -15,7 +15,14 @@ export default function SendMoney({ onSubmit }: { onSubmit?: () => void }) {
 
   const handleSendMoney = () => {
     if (onSubmit) {
-      onSubmit();      // use parent page’s action
+      const payload = {
+        sendAmount,
+        receiveAmount,
+        sendCurrency,
+        receiveCurrency,
+        exchangeRate,
+      };
+      onSubmit(payload);      // use parent page’s action
     } else {
       navigate("/transfer"); // default behavior
     }
